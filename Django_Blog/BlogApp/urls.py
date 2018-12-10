@@ -17,7 +17,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='home'),
-    path('profile/<name>', views.ProfileView.as_view(), name="profile"),
-    path('single/<int:id>', views.SingleView.as_view(), name="single"),
+    path('', views.IndexView, name='home'),
+    path('profile/<name>', views.ProfileView, name="profile"),
+    #path('single/<int:id>', views.SingleView.as_view(), name="single"),
+    path('single/<int:id>', views.SingleView, name='single'),
+    path('topic/<name>', views.CategoryView, name="topic")
 ]

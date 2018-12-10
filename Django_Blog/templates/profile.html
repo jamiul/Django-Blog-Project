@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block title %}Profile
 <style type="text/css">
 	#fh5co-offcanvas {
@@ -16,6 +15,7 @@ padding: 50px;
 {% block profile %}
 <div class="fh5co-bio">
 		<figure>
+				{% load static %}
 			<img src="{% static 'images/person1.jpg' %}" alt="Free HTML5 Bootstrap Template" class="img-responsive">
 		</figure>
 		<h3 class="heading">About Me</h3>
