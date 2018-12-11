@@ -21,5 +21,7 @@ urlpatterns = [
     path('profile/<name>', views.ProfileView, name="profile"),
     #path('single/<int:id>', views.SingleView.as_view(), name="single"),
     path('single/<int:id>', views.SingleView, name='single'),
-    path('topic/<name>', views.CategoryView, name="topic")
+    path('topic/<name>', views.CategoryView, name="topic"),
+    path('login', views.loginView, name="login"),
+    path('logout', views.logoutView, name="logout")
 ]
