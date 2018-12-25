@@ -4,6 +4,10 @@ from .models import article
 from .models import author
 from .models import category
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator
+from django.db.models import Q
+from .forms import createForm
 
 '''class IndexView(TemplateView):#Class-based Template View
 	template_name = 'index.html'
@@ -14,13 +18,29 @@ from django.contrib.auth import authenticate,login,logout
 		return context'''
 def IndexView(request):#Function based View
     post = article.objects.all()
+    search = request.GET.get('srch')
+    if search:
+        post=post.filter(
+            Q(title__icontains=search)|
+            Q(body__icontains=search)
+        )
+    paginator = Paginator(post, 4) # Show 25 post per page
+    page = request.GET.get('page')
+    total_article = paginator.get_page(page)
     context = {
-        "post":post
+        "post":total_article
     }
     return render(request,'index.html',context)
 
 def ProfileView(request, name):
-    return render(request,'pofile.html')
+    post_author=get_object_or_404(User, username=name)
+    auth=get_object_or_404(author, name=post_author.id)
+    post=article.objects.filter(article_author=auth.id)
+    context={
+        "auth":auth,
+        "post":post
+    }
+    return render(request,'profile.html', context)
 
 def SingleView(request, id):
     post = get_object_or_404(article, pk=id)
@@ -56,3 +76,24 @@ def loginView(request):
 def logoutView(request):
     logout(request)
     return redirect('home')
+
+def createView(request):
+    if request.user.is_authenticated:
+        form = createForm(request.POST or None, request.FILES or None)
+        u = get_object_or_404(author, name=request.user.id)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.article_author = u
+            instance.save()
+            return redirect('home')
+        return render(request,'create.html',{'form':form}) 
+    else:
+        return redirect('login') 
+
+def userView(request):
+    if request.user.is_authenticated:
+        post = article.objects.filter(article_author=request.user.id)
+        profile = get_object_or_404(author, name=request.user.id)
+        return render(request,'user.html',{'post':post, 'profile':profile})
+    else:
+        return redirect('login')     
