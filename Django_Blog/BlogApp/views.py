@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
 from .forms import createForm
+from django.contrib import messages
 
 '''class IndexView(TemplateView):#Class-based Template View
 	template_name = 'index.html'
@@ -71,6 +72,9 @@ def loginView(request):
             if auth is not None:
                 login(request,auth)
                 return redirect('home')
+            else:
+                messages.add_message(request, messages.ERROR, 'Username or Password Wrong !!')
+                return render(request,'login.html')    
     return render(request,'login.html')
 
 def logoutView(request):
@@ -85,10 +89,35 @@ def createView(request):
             instance = form.save(commit=False)
             instance.article_author = u
             instance.save()
-            return redirect('home')
+            messages.success(request, 'Article is Created successfully !!')
+            return redirect('user')
         return render(request,'create.html',{'form':form}) 
     else:
         return redirect('login') 
+
+def updateView(request, id):
+    if request.user.is_authenticated:
+        u = get_object_or_404(author, name=request.user.id)
+        post = get_object_or_404(article, id=id)
+        form = createForm(request.POST or None, request.FILES or None, instance=post)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.article_author = u
+            instance.save()
+            messages.success(request, 'Article updated successfully !!')
+            return redirect('user')
+        return render(request,'create.html',{'form':form}) 
+    else:
+        return redirect('login') 
+
+def deleteView(request, id):
+    if request.user.is_authenticated:
+        post = get_object_or_404(article, id=id)
+        post.delete()
+        messages.warning(request, 'Article is Deleted')
+        return redirect('user')
+    else:
+        return redirect('login')           
 
 def userView(request):
     if request.user.is_authenticated:
