@@ -65,6 +65,31 @@
 			</div>
 			
 		</div>
+		<div class="container">
+				<h3 class="well">Comments</h3>
+				<div class="single_post_comment">
+					{% for comment in comment %}
+						<div class="single_comment">
+							<h4><img src="http://icons.iconarchive.com/icons/icons8/ios7/512/Users-User-Male-2-icon.png" alt="" style="height: 27px;margin-right: 10px;">{{ comment.name }}</h4>
+							<p>{{ comment.post_comment }}</p>
+						</div>
+						{% empty %}
+						<h3>No Comment Availabe</h3>
+					{% endfor %}
+				</div>
+			</div>		
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">Comment</h3>
+			</div>
+			<div class="panel-body">
+				<form action="" method="POST">
+					{% csrf_token %}
+					{{ form.as_p }}
+					<button class="btn btn-primary">POST</button>
+				</form>
+			</div>
+		</div>
 	</div>
 {% endblock %}
 

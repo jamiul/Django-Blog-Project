@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Welcome to our django blog{% endblock %}
+{% block stylesheet %}{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success">Submit</button>
+
+    </form>
+</div>
+ 
+{% endblock %}
+{% block script %}
+
+{% endblock %}

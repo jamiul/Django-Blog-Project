@@ -28,4 +28,9 @@ urlpatterns = [
     path('user', views.userView, name="user"),
     path('update/<int:id>', views.updateView, name="update"),
     path('delete/<int:id>', views.deleteView, name="delete"),
+    path('register', views.registerView, name="register"),
+    path('topics', views.topicsView, name="topics"),
+    path('createTopics', views.createTopicsView, name="createTopics"),
+    #account confirmations
+    path('activate/<uid>/<token>', views.activate, name="activate"),
 ]
