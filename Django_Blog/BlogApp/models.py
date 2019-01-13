@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
+from PIL import Image
 
 class author(models.Model):
     name = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -20,7 +23,7 @@ class category(models.Model):
 class article(models.Model):
     article_author = models.ForeignKey(author, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    body = models.TextField()
+    body = RichTextUploadingField()
     image = models.FileField()
     publish_date = models.DateTimeField(auto_now=False, auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True, auto_now_add=False)

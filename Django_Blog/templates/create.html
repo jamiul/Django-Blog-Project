@@ -6,6 +6,7 @@
 <div class="container-fluid">
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+            {{ form.media }}
         {{ form.as_p }}
         <button class="btn btn-success">Submit</button>
 
