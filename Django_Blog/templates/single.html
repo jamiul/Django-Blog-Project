@@ -50,6 +50,7 @@
 				</div>
 			</article>
 		</div>
+		<a href="{% url 'pdf' id=post.id %}" target="_blank">Save as PDF</a>
 		<div class="container">
 			<h3 class="well">Related Post</h3>
 			<div class="row">
@@ -95,4 +96,4 @@
 
 {% block scripts %}
 
-        {% endblock %}
+{% endblock %}

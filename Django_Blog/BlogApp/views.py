@@ -16,7 +16,9 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.mail import send_mail
 from .token import activation_token
-
+from .require import renderPdf
+from django.views import View
+from django.core import serializers
 '''class IndexView(TemplateView):#Class-based Template View
 	template_name = 'index.html'
 
@@ -32,7 +34,7 @@ def IndexView(request):# Function based View
             Q(title__icontains=search)|
             Q(body__icontains=search)
         )
-    paginator = Paginator(post, 9) # Show 25 post per page
+    paginator = Paginator(post, 4) # Show 25 post per page
     page = request.GET.get('page')
     total_article = paginator.get_page(page)
     context = {
@@ -204,3 +206,28 @@ def activate(request, uid, token):
         return HttpResponse("<h1>Account is activated. Now you can <a href='/login'>login</a></h1>")
     else:
         return HttpResponse("<h3>Invalid activation link</h3>")        
+
+
+class pdf(View):
+    def get(self, request, id):
+        try:
+            query=get_object_or_404(article,id=id)
+        except:
+            Http404('Content not found')
+        context={
+            "article":query
+        }
+        article_pdf=renderPdf('pdf.html',context)
+        return HttpResponse(article_pdf,content_type='application/pdf') 
+
+class getJson(View):
+    def get(self, request):
+        data = article.objects.all()
+        json_data = serializers.serialize("json", data, indent=2)
+        return HttpResponse(json_data, content_type="application/json")
+
+class getXml(View): 
+    def get(self, request):
+        data = article.objects.all()
+        xml_data = serializers.serialize("xml", data)
+        return HttpResponse(xml_data, content_type="application/xml")                 

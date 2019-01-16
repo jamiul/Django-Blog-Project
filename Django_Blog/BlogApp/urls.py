@@ -31,6 +31,9 @@ urlpatterns = [
     path('register', views.registerView, name="register"),
     path('topics', views.topicsView, name="topics"),
     path('createTopics', views.createTopicsView, name="createTopics"),
-    #account confirmations
+    path('pdf/<int:id>',views.pdf.as_view(), name="pdf"),
+    path('json',views.getJson.as_view(), name="json"),
+    path('xml',views.getXml.as_view(), name="xml"),
+    # Account confirmations
     path('activate/<uid>/<token>', views.activate, name="activate"),
 ]
